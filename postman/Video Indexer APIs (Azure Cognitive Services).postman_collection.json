@@ -1,0 +1,831 @@
+{
+	"info": {
+		"name": "Video Indexer APIs (Azure Cognitive Services)",
+		"_postman_id": "b4eff175-6c7f-2be9-66c5-37e66b9597f4",
+		"description": "These are APIs for Video Indexer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Api",
+			"description": "Folder for Api",
+			"item": [
+				{
+					"name": "Delete Breakdown",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id?deleteInsights={{deleteInsights}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id"
+							],
+							"query": [
+								{
+									"key": "deleteInsights",
+									"value": "{{deleteInsights}}",
+									"equals": true,
+									"description": "Whether to delete the generated insights as well."
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Deletes the uploaded video and if deleteInsights=true, then deletes the generated insights as well."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Accounts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Accounts",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Accounts"
+							]
+						},
+						"description": "Returns the details of the user's accounts."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Breakdown",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "{{language}}",
+									"equals": true,
+									"description": "The requested language of the text.",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Returns the full details of the the given breakdown including all the insights (transcript, OCR, people, etc).\nThe full details include the topics, the faces, the blocks, etc.\nEach block includes time ranges, transcript lines, OCR lines, sentiments, faces and their block thumbnails."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Insights Widget Url",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id/InsightsWidgetUrl",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id",
+								"InsightsWidgetUrl"
+							],
+							"query": [
+								{
+									"key": "widgetType",
+									"value": "{{widgetType}}",
+									"equals": true,
+									"description": "A type of a sub-widget to include (People, Sentiments, Keywords, Search)",
+									"disabled": true
+								},
+								{
+									"key": "allowEdit",
+									"value": "{{allowEdit}}",
+									"equals": true,
+									"description": "A boolean that if set to true will return accessToken with editing permissions. (remove face, edit text etc...)",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Gets a url to the cognitive insights widget url, including an access token."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Insights Widget Url By External Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/GetInsightsWidgetUrlByExternalId?externalId={{externalId}}&widgetType={{widgetType}}&allowEdit={{allowEdit}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"GetInsightsWidgetUrlByExternalId"
+							],
+							"query": [
+								{
+									"key": "externalId",
+									"value": "{{externalId}}",
+									"equals": true,
+									"description": "An external id to search for (which was associated with a video of this subscription at upload)."
+								},
+								{
+									"key": "widgetType",
+									"value": "{{widgetType}}",
+									"equals": true,
+									"description": "A type of a sub-widget to include (People, Sentiments, Keywords, Search)"
+								},
+								{
+									"key": "allowEdit",
+									"value": "{{allowEdit}}",
+									"equals": true,
+									"description": "A boolean that if set to true will return accessToken with editing permissions. (remove face, edit text etc...) So the rendered widget will have edit toggle option available."
+								}
+							]
+						},
+						"description": "Gets a url to the cognitive insights widget url, including an access token, based on a given external id.\nThis API will only work for breakdowns which are owned by this subscription."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Player Widget Url",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id/PlayerWidgetUrl",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id",
+								"PlayerWidgetUrl"
+							],
+							"variable": [
+								{
+									"description": "The breakdown id.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Gets a url to the player widget url, including an access token."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Processing State",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id/State",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id",
+								"State"
+							],
+							"variable": [
+								{
+									"description": "The breakdown id.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Gets the processing state of the given breakdown id (Uploaded, Processing, Processed, Failed) and if Processing it returns the progress (e.g. 30%)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vtt Url",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/:id/VttUrl?language={{language}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								":id",
+								"VttUrl"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "{{language}}",
+									"equals": true,
+									"description": "The requested language of the text."
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Gets a url to a VTT file with the given breakdown's captions."
+					},
+					"response": []
+				},
+				{
+					"name": "Re-Index Breakdown",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/reindex/:id?callbackUrl={{callbackUrl}}&indexingPreset={{indexingPreset}}&streamingPreset={{streamingPreset}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"reindex",
+								":id"
+							],
+							"query": [
+								{
+									"key": "callbackUrl",
+									"value": "{{callbackUrl}}",
+									"equals": true,
+									"description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'."
+								},
+								{
+									"key": "indexingPreset",
+									"value": "{{indexingPreset}}",
+									"equals": true,
+									"description": "The indexing preset to use (Default/AudioOnly). Not passing it means keeping the previous preset (from upload or the latest re-index)."
+								},
+								{
+									"key": "streamingPreset",
+									"value": "{{streamingPreset}}",
+									"equals": true,
+									"description": "The streaming preset to use (Default/AdaptiveBitrate). Not passing it means keeping the previous preset (from upload or the latest re-index)."
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Re-indexes the given breakdown."
+					},
+					"response": []
+				},
+				{
+					"name": "Re-Index Breakdown By External Id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/reindexbyexternalid/:externalId?callbackUrl={{callbackUrl}}&indexingPreset={{indexingPreset}}&streamingPreset={{streamingPreset}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"reindexbyexternalid",
+								":externalId"
+							],
+							"query": [
+								{
+									"key": "callbackUrl",
+									"value": "{{callbackUrl}}",
+									"equals": true,
+									"description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'."
+								},
+								{
+									"key": "indexingPreset",
+									"value": "{{indexingPreset}}",
+									"equals": true,
+									"description": "The indexing preset to use (Default/AudioOnly). Not passing it means keeping the previous preset (from upload or the latest re-index)."
+								},
+								{
+									"key": "streamingPreset",
+									"value": "{{streamingPreset}}",
+									"equals": true,
+									"description": "The streaming preset to use (Default/AdaptiveBitrate). Not passing it means keeping the previous preset (from upload or the latest re-index)."
+								}
+							],
+							"variable": [
+								{
+									"description": "An external id (which was associated with a video of this subscription at upload).",
+									"key": "externalId",
+									"value": "{{externalId}}"
+								}
+							]
+						},
+						"description": "Re-indexes the video of the given external id."
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/Search?privacy={{privacy}}&id={{id}}&partition={{partition}}&owner={{owner}}&face={{face}}&query={{query}}&textScope={{textScope}}&pageSize={{pageSize}}&skip={{skip}}&externalId={{externalId}}&language={{language}}&searchInPublicAccount={{searchInPublicAccount}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"Search"
+							],
+							"query": [
+								{
+									"key": "privacy",
+									"value": "{{privacy}}",
+									"equals": true,
+									"description": "A privacy level (Private, Organization, Public)."
+								},
+								{
+									"key": "id",
+									"value": "{{id}}",
+									"equals": true,
+									"description": "A breakdown id to search for."
+								},
+								{
+									"key": "partition",
+									"value": "{{partition}}",
+									"equals": true,
+									"description": "A partition to search for."
+								},
+								{
+									"key": "owner",
+									"value": "{{owner}}",
+									"equals": true,
+									"description": "An owner to search for."
+								},
+								{
+									"key": "face",
+									"value": "{{face}}",
+									"equals": true,
+									"description": "A face to search for."
+								},
+								{
+									"key": "query",
+									"value": "{{query}}",
+									"equals": true,
+									"description": "Free text to search for."
+								},
+								{
+									"key": "textScope",
+									"value": "{{textScope}}",
+									"equals": true,
+									"description": "The text scope to search in."
+								},
+								{
+									"key": "pageSize",
+									"value": "{{pageSize}}",
+									"equals": true,
+									"description": "The number of results to return."
+								},
+								{
+									"key": "skip",
+									"value": "{{skip}}",
+									"equals": true,
+									"description": "The number of results to skip (used for paging)."
+								},
+								{
+									"key": "externalId",
+									"value": "{{externalId}}",
+									"equals": true,
+									"description": "An external id to search for (which was associated with the video at upload)."
+								},
+								{
+									"key": "language",
+									"value": "{{language}}",
+									"equals": true,
+									"description": "The language to search in."
+								},
+								{
+									"key": "searchInPublicAccount",
+									"value": "{{searchInPublicAccount}}",
+									"equals": true,
+									"description": "Whether to look in the Public account (otherwise, in the user's account)."
+								}
+							]
+						},
+						"description": "Performs search and returns the search results. If available, returns the matches of the search filters in the results."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Face Name",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/UpdateFaceName/:id?faceId={{faceId}}&newName={{newName}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"UpdateFaceName",
+								":id"
+							],
+							"query": [
+								{
+									"key": "faceId",
+									"value": "{{faceId}}",
+									"equals": true,
+									"description": "The face id (from the video's json)"
+								},
+								{
+									"key": "newName",
+									"value": "{{newName}}",
+									"equals": true,
+									"description": "The new name for the face (use 'Unknown #1/2/3...' to make it anonymous again)"
+								}
+							],
+							"variable": [
+								{
+									"description": "The breakdown id.",
+									"key": "id",
+									"value": "{{id}}"
+								}
+							]
+						},
+						"description": "Updates the name of the given face and trains the face model to recognize that face in future videos."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Transcript",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "Media type of the body sent to the API."
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns/UpdateTranscript/:id?language={{language}}&callbackUrl={{callbackUrl}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns",
+								"UpdateTranscript",
+								":id"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "{{language}}",
+									"equals": true,
+									"description": "The language to update."
+								},
+								{
+									"key": "callbackUrl",
+									"value": "{{callbackUrl}}",
+									"equals": true,
+									"description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'.\n\n"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{id}}",
+									"description": "The breakdown id."
+								}
+							]
+						},
+						"description": "Updates the video with the given transcript. If the specified language is the source language of the video, then the video will be re-indexed with the given transcript, and the transcript of all the other languages will be re-generated. If the specified language is not the source language, the transcript of that language will be updated and the new text will be written into the existing lines and blocks of that language."
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Video",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"description": "Media type of the body sent to the API."
+							},
+							{
+								"key": "Ocp-Apim-Subscription-Key",
+								"value": "{{Ocp-Apim-Subscription-Key}}",
+								"description": "Subscription key which provides access to this API. Found in your Profile."
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileName",
+									"value": "",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://videobreakdown.azure-api.net/Breakdowns/Api/Partner/Breakdowns?name={{name}}&privacy={{privacy}}&videoUrl={{videoUrl}}&language={{language}}&externalId={{externalId}}&metadata={{metadata}}&description={{description}}&partition={{partition}}&callbackUrl={{callbackUrl}}&indexingPreset={{indexingPreset}}&streamingPreset={{streamingPreset}}",
+							"protocol": "https",
+							"host": [
+								"videobreakdown",
+								"azure-api",
+								"net"
+							],
+							"path": [
+								"Breakdowns",
+								"Api",
+								"Partner",
+								"Breakdowns"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{name}}",
+									"equals": true,
+									"description": "The video name"
+								},
+								{
+									"key": "privacy",
+									"value": "{{privacy}}",
+									"equals": true,
+									"description": "The video privacy (Private, Organization or Public)"
+								},
+								{
+									"key": "videoUrl",
+									"value": "{{videoUrl}}",
+									"equals": true,
+									"description": "A public url of the video. If not specified, the video should be passed as a multipart/form body content"
+								},
+								{
+									"key": "language",
+									"value": "{{language}}",
+									"equals": true,
+									"description": "The language of the video, to be used when generating the transcript"
+								},
+								{
+									"key": "externalId",
+									"value": "{{externalId}}",
+									"equals": true,
+									"description": "An external id to associate with the video (can be searched for later)"
+								},
+								{
+									"key": "metadata",
+									"value": "{{metadata}}",
+									"equals": true,
+									"description": "Metadata to associate with the video (will be returned in queries)"
+								},
+								{
+									"key": "description",
+									"value": "{{description}}",
+									"equals": true,
+									"description": "The video description"
+								},
+								{
+									"key": "partition",
+									"value": "{{partition}}",
+									"equals": true,
+									"description": "A partition to partition videos by (used for searching a specific partition)"
+								},
+								{
+									"key": "callbackUrl",
+									"value": "{{callbackUrl}}",
+									"equals": true,
+									"description": "A url to notify when indexing is completed. It should be a POST url and VideoIndexer will add 2 additional query string parameters to it: id and state.\n\nFor example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'."
+								},
+								{
+									"key": "indexingPreset",
+									"value": "{{indexingPreset}}",
+									"equals": true,
+									"description": "The indexing preset to use (Default/AudioOnly/DefaultWithNoiseReduction)."
+								},
+								{
+									"key": "streamingPreset",
+									"value": "{{streamingPreset}}",
+									"equals": true,
+									"description": "The streaming preset to use (Default/AdaptiveBitrate)."
+								}
+							]
+						},
+						"description": "Uploads the given video, starts indexing it and returns a new breakdown id."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
