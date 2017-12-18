@@ -1,0 +1,623 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Video Indexer APIs - Production",
+    "version": "1.0"
+  },
+  "host": "videobreakdown.azure-api.net",
+  "basePath": "/Breakdowns",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyHeader": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header"
+    },
+    "apiKeyQuery": {
+      "type": "apiKey",
+      "name": "subscription-key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ],
+  "paths": {
+    "/Api/Partner/Breakdowns": {
+      "post": {
+        "description": "Uploads the given video, starts indexing it and returns a new breakdown id.\nThe supported formats are listed here:\nhttps://docs.microsoft.com/en-us/azure/media-services/media-services-media-encoder-standard-formats)",
+        "operationId": "Upload",
+        "parameters": [
+          {
+            "name": "videoUrl",
+            "in": "query",
+            "description": "A public url of the video/audio file. If not specified, the file should be passed as a multipart/form body content.",
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The language of the video, to be used when generating the transcript. Supported languages: \n[ar-EG, en-US, es-ES, ru-RU, ja-JP, de-DE\n, fr-FR, pt-BR, it-IT, zh-CN]\n\nLanguage mapping table can be found here: https://msdn.microsoft.com/en-us/library/cc233982.aspx",
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Japanese",
+              "German",
+              "French",
+              "Portuguese",
+              "Italian",
+              "Chinese",
+              "ar-EG",
+              "en-US",
+              "es-ES",
+              "ru-RU",
+              "ja-JP",
+              "de-DE",
+              "fr-FR",
+              "pt-BR",
+              "it-IT",
+              "zh-CN"
+            ]
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "An external id to associate with the video (can be searched for later).",
+            "type": "string"
+          },
+          {
+            "name": "metadata",
+            "in": "query",
+            "description": "Metadata to associate with the video (will be returned in queries).",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "description": "The video description.",
+            "type": "string"
+          },
+          {
+            "name": "partition",
+            "in": "query",
+            "description": "A partition to partition videos by (used for searching a specific partition)",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The video name.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "privacy",
+            "in": "query",
+            "description": "The video privacy (Private or Public).",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Private",
+              "Public"
+            ]
+          },
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "description": "A url to notify when indexing is completed.\nIt should be a POST url and VideoIndexer will add 2 additional query string parameters to it: id and state.\n\nFor example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'.",
+            "type": "string"
+          },
+          {
+            "name": "indexingPreset",
+            "in": "query",
+            "description": "The indexing preset to use (Default/AudioOnly/DefaultWithNoiseReduction).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AudioOnly",
+              "DefaultWithNoiseReduction"
+            ]
+          },
+          {
+            "name": "streamingPreset",
+            "in": "query",
+            "description": "The streaming preset to use (Default/AdaptiveBitrate).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AdaptiveBitrate"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "var content = new MultipartFormDataContent();\ncontent.Add(new StreamContent(File.Open(@\"[file]\", FileMode.Open)), \"[name]\", \"[filename]\");"
+            },
+            "description": "The video bytes as multipart/form-data"
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/{id}/State": {
+      "get": {
+        "description": "Gets the processing state of the given breakdown id (Uploaded, Processing, Processed, Failed) and if Processing it returns the progress (e.g. 30%).",
+        "operationId": "Get Processing State",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/Search": {
+      "get": {
+        "description": "Performs search and returns the search results. If available, returns the matches of the search filters in the results.",
+        "operationId": "Search",
+        "parameters": [
+          {
+            "name": "privacy",
+            "in": "query",
+            "description": "A privacy level (Private, Organization, Public).",
+            "type": "string",
+            "enum": [
+              "Private",
+              "Organization",
+              "Public"
+            ]
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "A breakdown id to search for.",
+            "type": "string"
+          },
+          {
+            "name": "partition",
+            "in": "query",
+            "description": "A partition to search for.",
+            "type": "string"
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "description": "An owner to search for.",
+            "type": "string"
+          },
+          {
+            "name": "face",
+            "in": "query",
+            "description": "A face to search for.",
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Free text to search for.",
+            "type": "string"
+          },
+          {
+            "name": "textScope",
+            "in": "query",
+            "description": "The text scope to search in.",
+            "type": "string",
+            "enum": [
+              "Transcript",
+              "Ocr"
+            ]
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of results to return.",
+            "type": "number"
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "The number of results to skip (used for paging).",
+            "type": "number"
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "An external id to search for (which was associated with the video at upload).",
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The language to search in.",
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Japanese",
+              "German",
+              "French",
+              "Portuguese",
+              "Italian",
+              "Chinese",
+              "Filipino",
+              "ar-EG"
+            ]
+          },
+          {
+            "name": "searchInPublicAccount",
+            "in": "query",
+            "description": "Whether to look in the Public account (otherwise, in the user's account).",
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/{id}": {
+      "get": {
+        "description": "Returns the full details of the the given breakdown including all the insights (transcript, OCR, people, etc).\nThe full details include the topics, the faces, the blocks, etc.\nEach block includes time ranges, transcript lines, OCR lines, sentiments, faces and their block thumbnails.",
+        "operationId": "Get Breakdown",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The requested language of the text.",
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Japanese",
+              "German",
+              "French",
+              "Portuguese",
+              "Italian",
+              "Chinese",
+              "Filipino",
+              "ar-EG"
+            ]
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "description": "Deletes the uploaded video and if deleteInsights=true, then deletes the generated insights as well.",
+        "operationId": "Delete Breakdown",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deleteInsights",
+            "in": "query",
+            "description": "Whether to delete the generated insights as well.",
+            "type": "boolean"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/{id}/InsightsWidgetUrl": {
+      "get": {
+        "description": "Gets a url to the cognitive insights widget url, including an access token.",
+        "operationId": "Get Insights Widget Url",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "widgetType",
+            "in": "query",
+            "description": "A type of a sub-widget to include (People, Sentiments, Keywords, Search)",
+            "type": "string",
+            "enum": [
+              "People",
+              "Sentiments",
+              "Keywords",
+              "Search"
+            ]
+          },
+          {
+            "name": "allowEdit",
+            "in": "query",
+            "description": "A boolean that if set to true will return accessToken with editing permissions. \n(remove face, edit text etc...)",
+            "type": "boolean"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/{id}/PlayerWidgetUrl": {
+      "get": {
+        "description": "Gets a url to the player widget url, including an access token.",
+        "operationId": "Get Player Widget Url",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/{id}/VttUrl": {
+      "get": {
+        "description": "Gets a url to a VTT file with the given breakdown's captions.",
+        "operationId": "Get Vtt Url",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id (video id), returned by the Upload or Search APIs.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The requested language of the text.",
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Japanese",
+              "German",
+              "French",
+              "Portuguese",
+              "Italian",
+              "Chinese",
+              "Filipino",
+              "ar-EG"
+            ]
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/GetInsightsWidgetUrlByExternalId": {
+      "get": {
+        "description": "Gets a url to the cognitive insights widget url, including an access token, based on a given external id.\nThis API will only work for breakdowns which are owned by this subscription.",
+        "operationId": "Get Insights Widget Url By External Id",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "An external id to search for (which was associated with a video of this subscription at upload).",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "widgetType",
+            "in": "query",
+            "description": "A type of a sub-widget to include (People, Sentiments, Keywords, Search)",
+            "type": "string",
+            "enum": [
+              "People",
+              "Sentiments",
+              "Keywords",
+              "Search"
+            ]
+          },
+          {
+            "name": "allowEdit",
+            "in": "query",
+            "description": "A boolean that if set to true will return accessToken with editing permissions. \n(remove face, edit text etc...)\nSo the rendered widget will have edit toggle option available.",
+            "type": "boolean"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Accounts": {
+      "get": {
+        "description": "Returns the details of the user's accounts.",
+        "operationId": "Get Accounts",
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/reindex/{id}": {
+      "put": {
+        "description": "Re-indexes the given breakdown.",
+        "operationId": "Re-Index Breakdown",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'.",
+            "type": "string"
+          },
+          {
+            "name": "indexingPreset",
+            "in": "query",
+            "description": "The indexing preset to use (Default/AudioOnly).\nNot passing it means keeping the previous preset (from upload or the latest re-index).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AudioOnly"
+            ]
+          },
+          {
+            "name": "streamingPreset",
+            "in": "query",
+            "description": "The streaming preset to use (Default/AdaptiveBitrate).\nNot passing it means keeping the previous preset (from upload or the latest re-index).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AdaptiveBitrate"
+            ]
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/reindexbyexternalid/{externalId}": {
+      "put": {
+        "description": "Re-indexes the video of the given external id.",
+        "operationId": "Re-Index Breakdown By External Id",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "path",
+            "description": "An external id (which was associated with a video of this subscription at upload).",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'.",
+            "type": "string"
+          },
+          {
+            "name": "indexingPreset",
+            "in": "query",
+            "description": "The indexing preset to use (Default/AudioOnly). Not passing it means keeping the previous preset (from upload or the latest re-index).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AudioOnly"
+            ]
+          },
+          {
+            "name": "streamingPreset",
+            "in": "query",
+            "description": "The streaming preset to use (Default/AdaptiveBitrate).\nNot passing it means keeping the previous preset (from upload or the latest re-index).",
+            "type": "string",
+            "enum": [
+              "Default",
+              "AdaptiveBitrate"
+            ]
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/UpdateFaceName/{id}": {
+      "put": {
+        "description": "Updates the name of the given face and trains the face model to recognize that face in future videos.",
+        "operationId": "Update Face Name",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The breakdown id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "faceId",
+            "in": "query",
+            "description": "The face id (from the video's json)",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "newName",
+            "in": "query",
+            "description": "The new name for the face (use 'Unknown #1/2/3...' to make it anonymous again)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/Api/Partner/Breakdowns/UpdateTranscript/{id}": {
+      "put": {
+        "description": "Updates the video with the given transcript.\nIf the specified language is the source language of the video, then the video will be re-indexed with the given transcript, and the transcript of all the other languages will be re-generated.\nIf the specified language is not the source language, the transcript of that language will be updated and the new text will be written into the existing lines and blocks of that language.",
+        "operationId": "Update Transcript",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The language to update.",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "English",
+              "Spanish",
+              "Russian",
+              "Japanese",
+              "German",
+              "French",
+              "Portuguese",
+              "Italian",
+              "Chinese",
+              "Filipino",
+              "ar-EG"
+            ]
+          },
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "description": "For example, if the callback url is 'https://test.com/notifyme?projectName=MyProject', the notification will be sent with additional parameters to 'https://test.com/notifyme?projectName=MyProject&id=1234abcd&state=Processed'.",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "example": "\"WEBVTT\n\n00:00:00.000 --> 00:00:30.000\nThis is line number 1\n\n00:00:35.110 --> 00:00:50.010\nThis is line number 2\n\""
+            },
+            "description": "A json string containing the full video VTT.\nFor example (notice the surrounding \"\"):\n\n\"WEBVTT\n\n00:00:00.000 --> 00:00:30.000\nThis is line number 1\n\n00:00:35.110 --> 00:00:50.010\nThis is line number 2\n\""
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "responses": {}
+      }
+    }
+  }
+}
